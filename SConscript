@@ -20,13 +20,15 @@ from SConsTools.standardExternalPackage import standardExternalPackage
 
 # Python configuration is determined by SConsTools, check SCons tools psdm_python
 
+assert env.get('CONDA', False), "not conda build"
+
 python = env['PYTHON']   # python with version number such as python2.7
 PREFIX = env['PYTHON_PREFIX']
 INCDIR = env['PYTHON_INCDIR']
 LIBDIR  = env['PYTHON_LIBDIR']
 BINDIR  = env['PYTHON_BINDIR']
 PKGLIBS = python
-LINKLIBS = ["lib"+python+".so*", 'libtcl8.5.so*', 'libtk8.5.so*']
+LINKLIBS = ["lib"+python+".so*", 'libtcl.so*', 'libtk.so*']
 LINKBINS = ["python", python]
 
 standardExternalPackage('python', **locals())
