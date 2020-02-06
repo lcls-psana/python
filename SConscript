@@ -11,6 +11,7 @@
 Import('*')
 
 from SConsTools.standardExternalPackage import standardExternalPackage
+import os, glob
 
 #
 # For the standard external packages which contain includes, libraries, 
@@ -28,7 +29,11 @@ INCDIR = env['PYTHON_INCDIR']
 LIBDIR  = env['PYTHON_LIBDIR']
 BINDIR  = env['PYTHON_BINDIR']
 PKGLIBS = python
-LINKLIBS = ["lib"+python+".so*", 'libtcl.so*', 'libtk.so*']
+# Handle python libraries with extra 'm'. Python 3.8 and beyond dropped this
+if glob.glob(os.path.join(LIBDIR, "lib"+python+".so*")):
+  LINKLIBS = ["lib"+python+".so*", 'libtcl.so*', 'libtk.so*']
+else:
+  LINKLIBS = ["lib"+python+"m.so*", 'libtcl.so*', 'libtk.so*']
 LINKBINS = ["python", python]
 
 standardExternalPackage('python', **locals())
